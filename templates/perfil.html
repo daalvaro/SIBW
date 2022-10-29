@@ -1,0 +1,60 @@
+{% extends "base.html" %} 
+
+{% block titulo %}Perfil{% endblock %}
+{% block estilo %}
+<link rel="stylesheet" href="../css/perfil.css">
+{% endblock %}
+
+{% block main %}
+    <div class="contenedor-perfil">
+        <div class="contenedor-imagen">
+            <img id="avatar" src="../img/marte.png">
+        </div>
+
+        <div class="perfil">
+            <div class="informacion">
+                <button class="editar" id="editar-user" type="button" onclick="abrirFormularioUser()">Editar</button>
+                <h4>Usuario</h4>
+                <p>{{ usuario.nombre }}</p>
+                <!-- Formulario de cambio de nombre de usuario -->
+                <form class="formulario-usuario" id="form-user" action="../scripts/actualizarusuario.php" method="post">
+                    <label for="user"><b>Nuevo usuario</b></label>
+                    <input type="text" placeholder="Nuevo usuario" name="user" required>
+                    <button id="button-user" type="submit" onclick="cerrarFormularioUser()">Confirmar</button>
+                </form>
+            </div>
+
+            <div class="informacion">
+                <button class="editar" id="editar-correo" type="button" onclick="abrirFormularioCorreo()">Editar</button>
+                <h4>Correo</h4>
+                <p>{{ usuario.correo }}</p>
+                <!-- Formulario de cambio de cambio de correo -->
+                <form class="formulario-usuario" id="form-correo" action="../scripts/actualizarusuario.php" method="post">
+                    <label for="correo"><b>Nuevo correo</b></label>
+                    <input type="text" placeholder="Tu nombre de usuario" name="correo" id="comment-mail" required>
+                    <button id="button-mail" type="submit" onclick="comprobarCorreo()">Confirmar</button>
+                </form>
+                <p id="error-email"></p>
+            </div>
+
+            <div class="informacion">
+                <button class="editar" id="editar-pass" type="button" onclick="abrirFormularioPass()">Editar</button>
+                <h4>Password</h4>
+                <p>************</p>
+                <!-- Formulario de cambio de contraseña -->
+                <form class="formulario-usuario" id="form-pass" action="../scripts/actualizarusuario.php" method="post">
+                    <label for="passwd"><b>Nueva contraseña</b></label>
+                    <input type="password" placeholder="Tu nueva contraseña" name="passwd" required>
+                    <button id="button-passwd" type="submit" onclick="cerrarFormularioPass()">Confirmar</button>
+                    <label for="new-passwd"><b>Repite la contraseña</b></label>
+                    <input type="password" placeholder="Repite la contraseña" name="new-passwd" required>
+                </form>
+            </div>
+
+            <div class="informacion">
+                <h4>Rol</h4>
+                <p>{{ usuario.rol }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

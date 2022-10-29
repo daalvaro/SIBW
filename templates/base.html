@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block titulo %}{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/styles.css"> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../java/javascript.js" defer></script>
+    {% block estilo %}{% endblock %}
+    <link rel="stylesheet" href="../css/all.css">
+    <link rel="icon" type="image/png" href="../img/quantics.png" />
+</head>
+
+<body>
+    {% block cabecera %}
+        <header>
+            <nav class="topnav" id="myTopnav">
+                <a class="logo">
+                    <img id="logo" src="../img/quantics.png">
+                    <h1>QUANTICS</h1>
+                </a>
+                <a class="menu" href="{{ '/index' }}">Inicio</a>
+                <a class="menu" href="">Horarios</a>
+                <a class="menu" href="">Empresas</a>
+                <a class="menu" href="">Ayuda</a>
+                <!-- Buscador de eventos -->
+                <div class="contenedor-search">
+                    <input type="text" placecholder="Buscar..." name="busqueda" id="busqueda">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+
+                    <div id="listaEventos">
+                        
+                    </div>
+                </div>
+                {% if not usuario %}
+                    <a class="item button"><button id="login" onclick="login()">Login</button></a>
+                    <a class="item button"><button id="signup" onclick="signup()">Sign Up</button></a>
+                {% else %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{ usuario.nombre }}<i class="fa fa-caret-down"></i></button>                                                               
+                        <div class="dropdown-content">
+                            <!-- Opciones del superusuario -->
+                            {% if usuario.rol == 'super' %}
+                                <a href="/usuario/{{usuario.nombre}}">Configuracion</a>
+                                <a href="/comentarios">Comentarios</a>
+                                <a href="/listaEventos">Lista Eventos</a>
+                                <a href="/permisos">Permisos</a>
+                            {% endif %}
+
+                            <!-- Opciones del gestor del sitio -->
+                            {% if usuario.rol == 'gestor' %}
+                                <a href="/usuario/{{usuario.nombre}}">Configuracion</a>
+                                <a href="/comentarios">Comentarios</a>
+                                <a href="/listaEventos">Lista Eventos</a>
+                            {% endif %}
+
+                            <!-- Opciones del moderador -->
+                            {% if usuario.rol == 'moderador' %}
+                                <a href="/usuario/{{usuario.nombre}}">Configuracion</a>
+                                <a href="/comentarios">Comentarios</a>
+                            {% endif %}
+
+                            <!-- Opciones del usuario registrado -->
+                            {% if usuario.rol == 'registrado' %}
+                                <a href="/usuario/{{usuario.nombre}}">Configuracion</a>
+                            {% endif %}
+                            <form class="logout" action="../scripts/logout.php" method="post">
+                                <button id="logout">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </nav>
+        </header>
+    {% endblock %}
+
+    <!-- Formulario de Log In -->
+    <div id="form-login" class="modal">
+        <form class="formulario-login" action="../login.php" method="post">
+          <div class="contenedor-login">
+            <label for="nick"><b>Usuario</b></label>
+            <input type="text" placeholder="Tu nombre de usuario" name="nick" required>
+      
+            <label for="contraseña"><b>Contraseña</b></label>
+            <input type="password" placeholder="Tu contraseña" name="contraseña" required>
+              
+            <button id="button" type="submit">Login</button>
+            <label>
+              <input type="checkbox" checked="checked" name="remember"> Recuérdame
+            </label>
+          </div>
+      
+          <div class="contenedor-login">
+            <button id="cancelbtn" type="button" onclick="cerrarLogin()">Cancelar</button>
+            <span class="psw">¿Olvidaste la <a href="#">contraseña?</a></span>
+          </div>
+        </form>
+    </div>
+
+    <!-- Formulario de Registro -->
+    <div id="form-signup" class="modal">
+        <form class="formulario-signup" action="../scripts/signup.php" method="post">
+          <div class="contenedor-login">
+            <label for="nick"><b>Usuario</b></label>
+            <input type="text" placeholder="Tu nombre de usuario" name="nick" required>
+      
+            <label for="email"><b>Correo</b></label>
+            <input type="text" placeholder="Tu correo" name="email" required>
+
+            <label for="contraseña"><b>Contraseña</b></label>
+            <input type="password" placeholder="Tu contraseña" name="contraseña" required>
+
+            <label for="contraseña-confirm"><b>Repite la contraseña</b></label>
+            <input type="password" placeholder="Repite la contraseña" name="contraseña-confirm" required>
+                       
+            <button id="button-signup" type="submit">Registrate</button>
+          </div>
+      
+          <div class="contenedor-login">
+            <button id="cancelbtn2" type="button" onclick="cerrarSignUp()">Cancelar</button>
+          </div>
+        </form>
+    </div>
+
+    <main>
+        {% block main %}
+            <div id="contenedor-main" class="contenedor-main">
+                {% block sidenav %}
+                    <aside id="sidenav" class="sidenav">
+                        <div class="sidenav-titulo">
+                            <p>ÚLTIMOS EVENTOS</p>
+                        </div>
+
+                        <ul class="noticias">
+                            <li class="lista-noticias">
+                                <div class="imagen-noticia">
+                                    <img src="../img/marte.png" />
+                                </div>
+                                <div class="contenedor-noticias">
+                                    <p class="titulo-noticia">Directo: Descenso de Perseverance en Marte</p>
+                                    <p class="fecha-noticia">18-02-2021</p>
+                                    <p class="descripcion">Vive en directo el descenso del robot Perseverance en Marte.</p>
+                                </div>
+                            </li>
+
+                            <li class="lista-noticias">
+                                <div class="imagen-noticia">
+                                    <img src="../img/atterizaje.png" />
+                                </div>
+                                <div class="contenedor-noticias">
+                                    <p class="titulo-noticia">Entrevista a Diana Trujillo</p>
+                                    <p class="fecha-noticia">19-02-2021</p>
+                                    <p class="descripcion">Entrevista a la directora de vuelo de 'Perseverance'</p>
+                                </div>
+                            </li>
+
+                            <li class="lista-noticias">
+                                <div class="imagen-noticia">
+                                    <img src="../img/Einstein.png" />
+                                </div>
+                                <div class="contenedor-noticias">
+                                    <p class="titulo-noticia">142 aniversario del nacimiento de Einstein</p>
+                                    <p class="fecha-noticia">14-03-2021</p>
+                                    <p class="descripcion">Exposición en celebración de su 142 aniversario.</p>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="sidenav-titulo">
+                            <p>Enlaces de interés</p>
+                            <a href="https://www.ugr.es/">www.ugr.es</a>
+                            <a href="www.w3schools.com/">www.w3schools.com</a>
+                            <a href="https://twig.symfony.com/">twig.symfony.com</a>
+                        </div>
+                    </aside>
+                {% endblock %}
+
+                {% block contenido %}<p>Contenido del template</p>{% endblock %}      
+            </div>
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div class="contenedor-footer">
+            <div class="footer-column">
+                <h2 class="titulo-footer">Contacto</h2>
+                <div class="social-icon">
+                    <i class="fas fa-map"></i>
+                    <p>Calle Periodista Daniel Saucedo Aranda</p>
+                </div>
+
+                <div class="social-icon">
+                    <i class="fas fa-phone"></i>
+                    <p>123456789</p>
+                </div>
+
+                <div class="social-icon">
+                    <i class="fas fa-envelope"></i>
+                    <p>alvaro149@correo.ugr.es</p>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h2 class="titulo-footer">Síguenos</h2>
+                <div class="footer__socials">
+                    <div class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                        <a class="social__link" href="">Facebook</a>
+                    </div>
+
+                    <div class="social-icon">
+                        <i class="fab fa-twitter"></i>
+                        <a class="social__link" href="">Twitter</a>
+                    </div>
+
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                        <a class="social__link" href="">Youtube</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h2 class="titulo-footer">Soporte</h2>
+                <ul>
+                    <li>Preguntas comunes</li>
+                    <li>Reportar un error</li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h2 class="titulo-footer">Información legal</h2>
+                <ul>
+                    <li>Aviso legal</li>
+                    <li>Condiciones de uso</li>
+                    <li>Política de Cookies</li>
+                    <li>Privacidad y protección de datos</li>
+                </ul>
+            </div>
+        </div>
+
+        <p class="copy">© 2021. Todos los derechos reservados</p>
+    </footer>
+</body>
+
+</html>

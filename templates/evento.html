@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block titulo %}Evento{% endblock %} 
+{% block estilo %}
+<link rel="stylesheet" href="../css/evento.css">
+{% endblock %} 
+
+{% set contador = 0 %} 
+
+{% block contenido %} 
+    {% block texto %}
+        <section id="contenido">      
+            <div class="container-main">
+                {% if usuario and usuario.rol != 'registrado' and usuario.rol != 'moderador' %}
+                <div class="opciones">
+                    <div class="form-modificar">
+                        <form action="../scripts/gestionarEvento.php" method="post">
+                            <button class="eliminar" type="submit" name="eliminarEvento" value="{{ evento['id'] }}">Eliminar</button>
+                            <input type="hidden" name="idEvento" value="{{ evento['id'] }}">
+                        </form>
+                    </div>
+
+                    <div class="form-modificar">
+                        <button class="modificar" type="button" onclick="abrirEdicionEvento()">Modificar</button>
+                    </div>
+                </div>
+            
+                <!-- Formulario añadir imagen -->
+                <div class="form-img">
+                    <form class="form-imagenes" action="../scripts/gestionarEvento.php" method="post" enctype="multipart/form-data">
+                        <span>Imagen a subir:</span> <input type="file" name="imagen">
+                        <label for="infoImagen"><b>Pie de foto:</b></label>
+                        <input type="text" name="infoImagen" required>
+                        <input class="add-imagen" id="add-imagen" type="submit" value="Subir imagen">
+                        <input type="hidden" name="idEvento" value="{{ evento['id'] }}">
+                    </form>
+                </div>
+                {% endif %}
+
+                <!-- Formulario modificar evento -->
+                <div id="formulario-modificar-evento">
+                    <form class="form-modificar-evento" action="../scripts/gestionarEvento.php" method="post">
+                        <div class="contenedor-modificar-comentario">
+                            <input type="hidden" name="idEvento" value="{{ evento['id'] }}">
+
+                            <label for="titulo"><b>Titulo</b></label>
+                            <input type="text" name="titulo" value="{{ evento['titulo'] }}">
+
+                            <label for="organizador"><b>Organizador</b></label>
+                            <input type="text" name="organizador" value="{{ evento['lugar']}}">
+
+                            <label for="fecha"><b>Fecha</b></label>
+                            <input type="date" name="fecha" value="{{ evento['fechaFormato'] }}">
+
+                            <label for="titulo"><b>Descripción</b></label>
+                            <textarea type="text" class="texto" name="descripcion">{{ evento['descripcion'] }}</textarea>
+        
+                            <div class="contenedor-boton">
+                                <button class="boton-modificar" type="submit" name="modificarEvento" value="{{ evento['id'] }}">Confirmar edición</button>
+                                <button class="cancelar-modificar" type="button" onclick="cerrarEdicionEvento()">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="info">
+                    <h2>{{ evento['titulo'] }}</h2>
+                    <h3>{{ evento['lugar'] }}</h3>
+                    <p>{{ evento['fecha'] }}</p>
+                </div>
+
+                <!-- Galeria -->
+                <div class="galeria">
+                    {% for i in imagenes %}
+                        <div class="slide">
+                            <img src="{{ i.imagen }}">
+                            <div class="texto-galeria">{{ i.descripcion }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <p>{{ evento['descripcion']|nl2br }}</p>
+        
+                <div class="redes-sociales">
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-facebook-f"></i>
+                    <i class="fab fa-youtube"></i>
+                    <a class="imprimir" href="/imprimir/{{id}}" class="item"><i class="fas fa-print"></i></a>
+                    <label for="micomentario"><i class="fas fa-comments"></i></label>
+                    <button type="button" id="micomentario" onclick="openNav()">
+                </div>
+
+                {% if usuario and usuario.rol != 'registrado' and usuario.rol != 'moderador' %}
+                    <div class="contenedor-etiquetas">
+                        <ul>
+                            {% for i in evento['etiquetas'] %}
+                            <li>{{ i }}</li>
+                            {% endfor %}
+                        </ul>
+
+                        <!-- Formulario para añadir etiquetas -->
+                        <div class="formulario-add-etiqueta">
+                            <form class="formulario-etiqueta" action="../scripts/gestionarEvento.php" method="post">
+                                <label for="etiqueta"><b>Etiqueta:</b></label>
+                                <input type="text" name="etiqueta" required>
+                                <button class="boton-etiqueta" type="submit" name="addEtiqueta" value="{{ evento['id'] }}">Añadir</button>
+                                <input type="hidden" name="idEvento" value="{{ evento['id'] }}">
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    {% endblock %}
+
+    {% block comentarios %}
+        <!-- Menu de comentarios -->
+        <div id="myNav" class="overlay"> 
+            <div class="cerrar-overlay">
+                <button type="button" id="closebtn" onclick="closeNav()"><i class="fas fa-comments"></i></button>
+            </div>
+
+            {% if usuario %}
+                <!-- Formulario de comentarios -->
+                <form class="nuevo-comentario" action="../scripts/nuevocomentario.php" method="post">
+                    <h3>Deja tu comentario</h3>
+                    
+                    <label for="comment">Comentario</label>
+                    <textarea placeholder="Comentario" id="comment" onkeyup="filter( {{ prohibidas|json_encode }} )" name="comentario" required></textarea>
+                    <p id="error-comment"></p>
+
+                    <button type="submit" id="submit">COMENTA</button>
+                </form>
+            {% endif %}
+
+            <div id="contenedor-comentarios">
+                {% for i in comentarios %}
+                <section class="comentario" id="comentario">
+                    {% block moderacion %}
+                        <p id="comments">{{ i.comentario }}</p>
+
+                        <div class="comment-toolbar">
+                            <div class="comment-details">
+                                <ul>
+                                    <li><i class="fa fa-clock"></i>{{ i.hora }}</li>
+                                    <li><i class="fa fa-calendar"></i>{{ i.fecha }}</li>
+                                    <li><i class="fa fa-user"></i>{{ i.autor }}</li>
+                                </ul>
+                            </div>
+
+                            <div class="comment-socials">
+                                <ul>
+                                    {% if usuario and usuario.rol != 'registrado' %}
+                                        <li><button type="button" class="editar" onclick="abrirEditar({{ contador }})"><i class="fas fa-pencil-alt"></i></button></li>
+                                        <li>
+                                            <!-- Formulario de eliminar comentario -->
+                                            <form class="form-eliminar-comentario" action="../scripts/moderarComentario.php" method="post">
+                                                <button type="submit"><i class="fa fa-trash"></i></button>
+                                                <input type="hidden" name="idComentarioEliminar" value="{{ i.idComentario }}"></input>
+                                            </form>
+                                        </li>
+                                    {% endif %}
+                                    <li><i class="fa fa-share-alt"></i></li>
+                                    <li><i class="fa fa-reply"></i></li>
+                                    <li><i class="fa fa-heart love"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Formulario de edicion de comentario -->
+                        <div class="formulario-editar-comentario">
+                            <form class="form-editar-comentario" action="../scripts/moderarComentario.php" method="post">
+                                <div class="contenedor-edicion-comentario">
+                                    <label for="nick"><b>Texto</b></label>
+                                    <textarea type="text" class="comment" name="comentario" onkeyup="filterComentario( {{ prohibidas|json_encode }}, {{ contador }} )">{{ i.comentario }}</textarea>
+                
+                                    <input type="hidden" name="idComentarioEditar" value="{{ i.idComentario }}"></input>
+                
+                                    <button class="button-editar" type="submit">Confirmar edición</button>
+                                </div>
+                
+                                <div class="contenedor-edicion-comentario">
+                                    <button class="cancelbtn-editar" type="button" onclick="cerrarEditar({{ contador }})">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    {% endblock %}
+                </section>
+            {% set contador = contador + 1 %} 
+            {% endfor %}      
+            </div>
+        </div>
+    {% endblock %} 
+{% endblock %}

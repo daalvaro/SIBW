@@ -1,0 +1,132 @@
+body, main {
+    background-color: white;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.cabecera {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+h1 {
+    padding-right: 30px;
+    font-size: 3em;
+    text-align: center;
+    color: black;
+}
+
+#logo {
+    width: 55px;
+}
+
+.contenedor-main {
+    width: 98%;
+    margin: auto;
+}
+
+#contenido {
+    width: 98%;
+    margin-bottom: 25px;
+    padding-right: 50px;
+    margin: auto;
+}
+
+.container-main {
+    padding: 20px 30px;
+    background-color: white;
+}
+
+.contenedor-imagenes {
+    float: right;
+    padding-top: 20px;
+}
+
+.imagen {
+    padding-right: 20px;
+    padding-left: 50px;
+    filter: grayscale(100%);
+}
+
+.info h2 {
+    text-align: left;
+    font-size: 54px;
+}
+
+.info h3 {
+    text-align: left;
+    font-size: 34px;
+}
+
+#contenido p {
+    text-align: justify;
+    padding: 20px 5px;
+    padding-right: 20px;
+    font-size: 17px; 
+}
+
+img {
+    width: 400px;
+}
+
+.imagenEvento {
+    margin: 0;
+    margin-bottom: 0;
+}
+
+figcaption {
+    font-size: smaller;
+    margin-top: 0;
+    padding-left: 50px;
+    padding-right: 20px;
+    padding-bottom: 30px;
+    text-align: right;
+}
+
+.redes-sociales {
+    margin-right: 20px;
+    font-size: 24px;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.redes-sociales .fa-twitter, .redes-sociales .fa-facebook-f, .redes-sociales .fa-youtube, .fa-print  {
+    margin: 20px 0;
+    padding-right: 20px;
+}
+
+.contenedor-footer {
+    padding-left: 46px;
+}
+
+footer, .social-icon .fa-facebook-f, .copy, .social-icon .fa-twitter, .social-icon .fa-youtube {
+    background-color: white;
+}
+
+.footer-column p, .footer-column li, .footer__title, .social-icon i, .social__link, .copy, .titulo-footer {
+    color:black;
+}
+
+.social-icon a:hover, .correo:hover, .footer-column li:hover {
+    color: black;
+}
+
+.galeria, #micomentario, .imprimir, .fa-comments {
+    display: none;
+}
+
+.opciones, .contenedor-etiquetas, #formulario-modificar-evento {
+    display: none;
+}
+
+@media (max-width: 968px) {
+    .imagenEvento .imagen {
+        width: 360px;
+    }
+}
+
+@media (min-width: 968px) {
+    #contenido{
+        width: 1500px;
+    }
+}

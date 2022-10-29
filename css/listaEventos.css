@@ -1,0 +1,231 @@
+#contenedor-eventos {
+    width: 1500px;
+    margin: auto;
+    padding: 30px 0; 
+}
+
+.search-container {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.search-container input {
+    width: 20%;
+    margin: 0;
+    padding: 6px 10px;
+    border: none;
+}
+
+.search-container button {
+    float: right;
+    padding: 6px 10px;
+    background: #ddd;
+}
+
+
+.contenedor-lista {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.evento {
+    width: 31%;
+    margin-top: 30px;
+    padding-bottom: 10px;
+    background-color: white;
+}
+
+.contenedor-todo {
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.contenedor-imagen {
+    width: 100%;
+    height: 300px;
+}
+
+.contenedor-imagen img {
+    width: 100%;
+    height: 100%;
+}
+
+.info-evento {
+    padding: 15px;
+}
+
+.descripcion {
+    font-size: 13px;
+    text-align: justify;
+}
+
+.etiquetas {
+    padding-top: 5px;
+}
+
+.etiquetas ul li {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 3px 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    border-radius: 5px;
+    background-color: #211E1E;
+}
+
+.opciones {
+    margin-top: 10px;
+    text-align: right;
+    border-top: 2px solid #5dc2a2;
+}
+
+.form-modificar {
+    float: right;
+    margin: 10px 0 0 15px;
+}
+
+.modificar, .add-etiqueta, .add-evento, .boton-etiqueta {
+    font-size: 16px;
+    padding: 2px 5px;
+    cursor: pointer;
+    border: 1px solid #5dc2a2;
+}
+
+.modificar:hover, .add-etiqueta:hover, .add-evento:hover, .boton-etiqueta:hover {
+    color: white;
+    background-color: #5dc2a2;
+}
+
+.eliminar {
+    font-size: 16px;
+    padding: 2px 5px;
+    cursor: pointer;
+    border: 1px solid red;
+}
+
+.eliminar:hover {
+    color: white;
+    background-color: red;
+}
+
+/*********************************************************************************************************************/
+.formulario-modificar-evento, #formulario-add-evento {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.form-modificar-evento {
+    width: 75%; 
+    margin: 5% auto 15% auto; 
+    border: 1px solid #888;
+    background-color: #fefefe;
+}
+
+.contenedor-modificar-comentario, .contenedor-boton {
+    width: 100%;
+    padding: 16px;
+    background-color: #f1f1f1;
+}
+
+.contenedor-boton {
+    width: 50%;
+    margin: auto;
+}
+
+.contenedor-modificar-comentario input, textarea {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.contenedor-modificar-comentario textarea {
+    height: 300px;
+}
+
+.boton-modificar, .cancelar-modificar {
+    width: 100%;
+    margin: 8px 0;
+    padding: 14px 20px;
+    text-align: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
+.boton-modificar {
+    background-color: #04AA6D;
+}
+  
+.cancelar-modificar {
+    background-color: #f44336;
+}
+
+.boton-modificar:hover, .cancelar-modificar:hover {
+    opacity: 0.8;
+}
+  
+/******************************************************************************************************/
+.formulario-add-etiqueta {
+    margin-top: 50px;
+    display: none;
+}
+
+.formulario-etiqueta {
+    display: flex;
+    align-items: center;
+}
+
+.formulario-etiqueta label {
+    width: 20%;
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.formulario-etiqueta input[type=text] {
+    width: 60%;
+    margin-right: 10px;
+}
+
+.boton-etiqueta {
+    width: 20%;
+}
+
+@media screen and (max-width: 968px) {
+    .evento  {
+        width: 100%;
+    }
+}
+
+/******************************************************************************************************/
+.roles form, .roles h4 {
+    display: inline;
+    font-size: 18px;
+}
+
+.roles select, .boton-rol {
+    font-size: 18px;
+}
+
+.roles {
+    float: right;
+    padding-top: 10px;
+}
+
+.roles select {
+    margin-left: 5px;
+}

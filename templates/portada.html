@@ -1,0 +1,24 @@
+{% extends "base.html" %} 
+
+{% block titulo %}Portada{% endblock %}
+{% block estilo %}<link rel="stylesheet" href="../css/portada.css">{% endblock %}
+
+{% block contenido %}
+    <section id="contenido">
+        <div class="titulo-contenido">
+            <p>PRÓXIMOS EVENTOS</p>
+        </div>
+
+        <div class="contenedor-eventos">
+            {% for i in eventos %}
+                <article>
+                    <a href= "evento/{{ i.id }}">
+                        <img class="img-evento" src="{{ i.portada }}" />
+                        <h6>{{ i.fecha }}</h6>
+                        <h3>{{ i.titulo }}</h3>
+                    </a>
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

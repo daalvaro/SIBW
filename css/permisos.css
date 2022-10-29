@@ -1,0 +1,63 @@
+.contenedor-usuarios {
+    display: flex;
+    flex-wrap: wrap;
+    width: 1500px;
+    margin: auto;
+    padding-bottom: 50px;
+}
+
+.perfil {
+    margin: 10px 10px;
+    width: 31%;
+    background-color: white;
+    display: flex;
+}
+
+.avatar {
+    flex: 25%;
+}
+
+.informacion {
+    flex: 75%;
+    padding: 10px 5px;
+    display: inline-block;
+}
+
+.info {
+    margin: 5px 0px;
+}
+
+.info h4, .info p, .roles h4, .roles form {
+    display: inline;
+    font-size: 18px;
+}
+
+.roles select, .boton-rol {
+    font-size: 18px;
+}
+
+.avatar img {
+    width: 115px;
+    height: 135px;
+}
+
+.roles {
+    padding-top: 10px;
+    border-top: 1px solid #5dc2a2;;
+}
+
+.roles select {
+    margin-left: 5px;
+}
+
+@media screen and (max-width: 1200px) {
+    .perfil  {
+        width: 47%;
+    }
+}
+
+@media screen and (max-width: 968px) {
+    .perfil  {
+        width: 100%;
+    }
+}

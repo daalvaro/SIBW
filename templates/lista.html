@@ -1,0 +1,9 @@
+<ul id="modal" class="list-unstyled">
+    {% if lista %}
+        {% for i in lista %}
+            <a href="/evento/{{i.id}}"><li>{{ i.titulo }}</li></a>
+        {% endfor %}
+    {% else %}
+        <li>Evento no encontrado</li>
+    {% endif %}
+</ul>

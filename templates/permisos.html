@@ -1,0 +1,49 @@
+{% extends "base.html" %} 
+
+{% block titulo %}Perfil{% endblock %}
+{% block estilo %}
+    <link rel="stylesheet" href="../css/permisos.css">
+{% endblock %}
+
+{% block main %}
+    <div class="contenedor-usuarios">
+        {% for i in usuarios %}
+            <div class="perfil">
+                <div class="avatar">
+                    <img src="../img/Einstein.png">
+                </div>
+
+                <div class="informacion">
+                    <div class="info">
+                        <h4>Usuario:</h4>
+                        <p>{{ i.nombre }}</p>
+                    </div>
+
+                    <div class="info">
+                        <h4>Correo:</h4>
+                        <p>{{ i.correo }}</p>
+                    </div>
+
+                    <div class="info">
+                        <h4>Rol:</h4>
+                        <p>{{ i.rol }}</p>
+                    </div>
+
+                    <div class="roles">
+                        <h4>Cambiar rol:</h4>
+                        <form action="../permisosUsuarios.php" method="post">
+                            <select name="rol">
+                                <option>registrado</option>
+                                <option>moderador</option>
+                                <option>gestor</option>
+                                <option>super</option>
+                            </select>
+                            <input class="boton-rol" type="submit" value="Cambiar">
+                            <input name="idUsuario" type="hidden" value="{{ i.idUsuario }}"></input>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

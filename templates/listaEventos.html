@@ -1,0 +1,144 @@
+{% extends "evento.html" %} 
+{% block titulo %}Lista de eventos{% endblock %} 
+
+{% block estilo %}
+    <link rel="stylesheet" href="../css/listaEventos.css">
+{% endblock %} 
+
+{% set contador = 0 %} 
+
+{% block main %}
+<div id="contenedor-eventos">
+    <!-- Buscador de eventos -->
+    <div class="search-container">
+        <form action="../scripts/gestionarEvento.php" method="post">
+            <input type="text" placeholder="Search.." name="search">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+
+    <button class="add-evento" type="submit" onclick="abrirAñadirComentario()">Añadir Evento</button>
+
+    <div class="contenedor-lista">
+        {% for i in eventos %}
+            <div class="evento">
+                <div class="contenedor-todo">
+                <div class="contenedor-imagen">
+                    <img src="{{ i.portada }}">
+                </div>
+
+                <div class="info-evento">
+                    <h3>{{ i.titulo }}</h3>
+                    <p>{{ i.lugar }}</p>
+                    <p>{{ i.fecha }}</p>
+                    <!--<p class="descripcion">{{ i.descripcion }}</p>-->
+                    <div class="etiquetas">
+                        <ul>
+                            {% for j in i.etiquetas %}
+                                <li>{{ j }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="opciones">
+                        <div class="form-modificar">
+                            <form action="../scripts/gestionarEvento.php" method="post">
+                                <button class="eliminar" type="submit" name="eliminarEvento" value="{{ i.id }}">Eliminar</button>
+                                <input type="hidden" name="idEvento" value="{{ i.id }}">
+                            </form>
+                        </div>
+
+                        <div class="form-modificar">
+                            <button class="modificar" type="button" onclick="abrirEdicionComentario({{ contador }})">Modificar</button>
+                        </div>
+
+                        <div class="form-modificar">
+                            <button class="add-etiqueta" type="submit" onclick="abrirFormEtiqueta({{ contador }})">Añadir etiqueta</button>                    
+                        </div>
+
+                        <div class="formulario-add-etiqueta">
+                            <form class="formulario-etiqueta" action="../scripts/gestionarEvento.php" method="post">
+                                <label for="etiqueta"><b>Etiqueta:</b></label>
+                                <input type="text" name="etiqueta" required>
+                                <button class="boton-etiqueta" type="submit" name="addEtiqueta" value="{{ i.id }}">Confirmar</button>
+                                <input type="hidden" name="idEvento" value="{{ i.id }}">
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="roles">
+                        <h4>Publicado:</h4>
+                        <form action="../scripts/gestionarEvento.php" method="post">
+                            <select name="valor" value="{{ i.publicado }}">
+                                {% if i.publicado == 0 %}
+                                    <option>Si</option>
+                                    <option selected>No</option>
+                                {% else %}
+                                    <option selected>Si</option>
+                                    <option>No</option>
+                                {% endif %} 
+                            </select>
+                            <input class="boton-rol" type="submit" name="publicado" value="Cambiar">
+                            <input type="hidden" name="idEvento" value="{{ i.id }}">
+                        </form>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Formulario añadir evento-->
+                <div id="formulario-add-evento">
+                    <form class="form-modificar-evento" action="../scripts/addEvento.php" method="post" enctype="multipart/form-data">
+                        <div class="contenedor-modificar-comentario">
+                            <label for="titulo"><b>Titulo</b></label>
+                            <input type="text" name="titulo" required>
+
+                            <label for="organizador"><b>Organizador</b></label>
+                            <input type="text" name="organizador" required>
+
+                            <label for="fecha"><b>Fecha</b></label>
+                            <input type="date" name="fecha"required>
+
+                            <label for="descripcion"><b>Descripción</b></label>
+                            <textarea type="text" class="texto" name="descripcion" required></textarea>
+
+                            <label for="portada"><b>Portada</b></label>
+                            <input type="file" name="portada" required>
+        
+                            <div class="contenedor-boton">
+                                <button class="boton-modificar" type="submit">Confirmar</button>
+                                <button class="cancelar-modificar" type="button" onclick="cerrarAñadirComentario()">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Formulario modificar evento -->
+                <div class="formulario-modificar-evento">
+                    <form class="form-modificar-evento" action="../scripts/gestionarEvento.php" method="post">
+                        <div class="contenedor-modificar-comentario">
+                            <input type="hidden" name="idEvento" value="{{ i.id }}">
+
+                            <label for="titulo"><b>Titulo</b></label>
+                            <input type="text" name="titulo" value="{{ i.titulo }}">
+
+                            <label for="organizador"><b>Organizador</b></label>
+                            <input type="text" name="organizador" value="{{ i.lugar }}">
+
+                            <label for="fecha"><b>Fecha</b></label>
+                            <input type="date" name="fecha" value="{{ i.fecha }}">
+
+                            <label for="titulo"><b>Descripción</b></label>
+                            <textarea type="text" class="texto" name="descripcion">{{ i.descripcion }}</textarea>
+        
+                            <div class="contenedor-boton">
+                                <button class="boton-modificar" type="submit" name="modificarEvento" value="{{ i.id }}">Confirmar edición</button>
+                                <button class="cancelar-modificar" type="button" onclick="cerrarEdicionComentario({{ contador }})">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% set contador = contador + 1 %} 
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

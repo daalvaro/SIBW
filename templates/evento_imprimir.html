@@ -1,0 +1,19 @@
+{% extends "evento.html" %} 
+
+{% block titulo %}Imprimir{% endblock %}
+{% block estilo %}<link rel="stylesheet" href="../css/evento_imprimir.css"> {% endblock %} 
+
+{% block cabecera %}
+    <div class="cabecera">
+        <h1>QUANTICS</h1>
+        <img id="logo" src="../img/quantics-imprimir.png" />
+    </div>
+{% endblock %}
+
+{% block main %}
+    {% block contenido %}
+        {% block texto %}
+            {{ parent() }}
+        {% endblock %}
+    {% endblock %}
+{% endblock %}

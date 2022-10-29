@@ -1,0 +1,33 @@
+{% extends "evento.html" %} 
+{% block titulo %}Comentarios{% endblock %} 
+
+{% block estilo %}
+<link rel="stylesheet" href="../css/evento.css">
+<link rel="stylesheet" href="../css/comentarios.css">
+{% endblock %} 
+
+{% set contador = 0 %} 
+{% block main %}
+<div id="contenedor-comentarios">
+    <!-- Buscador de comentarios -->
+    <div class="search-container">
+        <form action="../scripts/moderarComentario.php" method="post">
+            <input type="text" placeholder="Search.." name="search">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+
+    {% for i in comentarios %}
+        <section class="comentario" id="comentario">
+            {% block moderacion %}
+                <p id="info-evento">ID del evento: {{ i.idEvento }}</p>
+                {{ parent() }}
+            {% endblock %}
+        </section>
+
+        {% set contador = contador + 1 %} 
+    {% endfor %}
+</div>
+
+
+{% endblock %}
